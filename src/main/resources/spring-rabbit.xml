@@ -15,17 +15,13 @@
 		port="${rabbit.port}" 
 		username="${rabbit.username}" 
 		password="${rabbit.password}"
-		publisher-confirms="true" 
+		publisher-confirms="true"
 	/>
 
-	<rabbit:admin connection-factory="connectionFactory" />
+	<rabbit:admin connection-factory="connectionFactory"/>
 
 	<!-- 给模板指定转换器 --><!-- mandatory必须设置true,return callback才生效 -->
-	<rabbit:template id="amqpTemplate"	connection-factory="connectionFactory" 
-		confirm-callback="confirmCallBackListener"
-		return-callback="returnCallBackListener" 
-		mandatory="true" 
-	/>
+	<rabbit:template id="amqpTemplate"	connection-factory="connectionFactory" confirm-callback="confirmCallBackListener" return-callback="returnCallBackListener" mandatory="true" />
 	
 	<rabbit:queue name="CONFIRM_TEST" />
 		
@@ -56,7 +52,7 @@
 
 	<!-- 配置consumer, 监听的类和queue的对应关系 -->
 	<rabbit:listener-container
-		connection-factory="connectionFactory" acknowledge="manual" >
+		connection-factory="connectionFactory" acknowledge="manual" concurrency="2" prefetch="100">
 		<rabbit:listener queues="CONFIRM_TEST" ref="receiveConfirmTestListener" />
 		<rabbit:listener queues="common-queue" ref="receiveConfirmTestListener" />
 	</rabbit:listener-container>
